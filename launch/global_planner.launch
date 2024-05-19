@@ -1,0 +1,30 @@
+<launch>
+	<arg name="namespace"				default="tello" />
+
+	<group ns="$(arg namespace)">
+        <node name="tello_dsp" pkg="dsp" type="dsp_node" output="screen">
+            <param name="use_gazebo_odom" type="bool" value="false"/>
+            <param name="use_3d" type="bool" value="true"/>
+            <!-- <param name="odom_topic" type="String" value="/tello/odom/filtered"/> -->
+            <param name="odom_topic" type="String" value="/tello/odom"/>
+            <param name="odom_frame_id" type="String" value="tello_odom"/>
+            <param name="base_link_frame" type="String" value="tello_link"/>
+            <param name="spline_step_" type="double" value="0.166"/>
+            <param name="risk" type="int" value="2"/>
+
+            <!-- data source to integrate (PointCloud2) -->
+            <remap from="/octomap_full" to="/tello/octomap_full" />
+            <remap from="/map" to="/tello/projected_map" />
+            <!-- <remap from="/dsp/set_start" to="/planning/set_start" />
+            <remap from="/dsp/set_goal" to="/planning/set_goal" />
+            <remap from="/dsp/path" to="/planning/path" />
+            <remap from="/dsp/splinepath" to="/planning/path_spline" /> -->
+        </node>
+        <!-- <node name="tello_path_to_pose" pkg="dsp" type="path_to_pose.py" output="screen">
+            <remap from="/dsp/path" to="/planning/path" />
+            <remap from="/odometry/imu" to="/tello/imu" />
+        </node> -->
+        <node pkg="rostopic" type="rostopic" name="start_pub" args="pub -r 10 /tello/dsp/set_start geometry_msgs/Point -- 0 0 0"/>
+        <node pkg="rostopic" type="rostopic" name="goal_pub" args="pub -r 10 /tello/dsp/set_goal geometry_msgs/Point -- 0.3 -1.0 0.0"/>
+    </group>
+</launch>
