@@ -1,0 +1,7 @@
+<launch>
+	<arg name="namespace"				default="tello" />
+
+	<group ns="$(arg namespace)">
+        <node pkg="ros_tello_model" type="local_planner" name="local_planner"/>
+    </group>
+</launch>
