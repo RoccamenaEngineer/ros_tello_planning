@@ -1,2 +1,2 @@
-# ros_tello_planning
-Collection of packages used for planning modules for DJI Tello drone
+# ROS Tello Planning
+Collection of packages used for 3D planning modules for DJI Tello drone
